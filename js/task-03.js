@@ -18,3 +18,15 @@ const images = [
 
 const galleryRef = document.querySelector(`#gallery`);
 console.log(galleryRef);
+
+const makeImageMarkup = ({ url, alt }) => {
+  return `
+  <li>
+  <img src=${url} alt=${alt}>
+  </li>
+  `;
+};
+
+const makeImageGallerySetup = images.map(makeImageMarkup).join('');
+
+galleryRef.insertAdjacentHTML(`afterbegin`, makeImageGallerySetup);
