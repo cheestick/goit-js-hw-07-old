@@ -5,8 +5,18 @@ const clearButtonRef = document.querySelector(
   `button[data-action = 'destroy']`,
 );
 
-createButtonRef.addEventListener('click', createBoxes);
-clearButtonRef.addEventListener('click', destroyBoxes);
+const boxQuantityInputRef = document.querySelector(
+  `#controls input[type='number']`,
+);
+
+boxQuantityInputRef.addEventListener(`blur`, quantityChangeHandler);
+
+function quantityChangeHandler({ target: { value } }) {
+  if (!value) return;
+
+  createButtonRef.addEventListener('click', createBoxes);
+  clearButtonRef.addEventListener('click', destroyBoxes);
+}
 
 const randomInt = max => Math.floor(Math.random() * max);
 const randomRGBcolor = () =>
