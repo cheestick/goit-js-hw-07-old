@@ -9,13 +9,25 @@ const boxQuantityInputRef = document.querySelector(
   `#controls input[type='number']`,
 );
 
+const boxesRef = document.querySelector(`div#boxes`);
+let quantity = null;
+
 boxQuantityInputRef.addEventListener(`blur`, quantityChangeHandler);
 
 function quantityChangeHandler({ target: { value } }) {
   if (!value) return;
+  quantity = value;
 
-  createButtonRef.addEventListener('click', createBoxes);
-  clearButtonRef.addEventListener('click', destroyBoxes);
+  createButtonRef.addEventListener('click', createButtonHandler);
+  clearButtonRef.addEventListener('click', clearButtonHandler);
+}
+
+function createButtonHandler() {
+  boxesRef.append(...createBoxes(quantity));
+}
+
+function clearButtonHandler() {
+  destroyBoxes();
 }
 
 const randomInt = max => Math.floor(Math.random() * max);
@@ -24,19 +36,29 @@ const randomRGBcolor = () =>
 
 function createBox(sideSize = 30) {
   const box = document.createElement(`div`);
+  box.dataset.size = sideSize;
   box.style.backgroundColor = randomRGBcolor();
-  box.style.width = `${sideSize}px`;
-  box.style.height = `${sideSize}px`;
+  box.style.width = `${box.dataset.size}px`;
+  box.style.height = `${box.dataset.size}px`;
+
   return box;
 }
 
-function createBoxes(amount) {
-  //   for (let a = 0; a < amount; a += 1) {
+function createBoxes(amount = 1) {
+  const boxes = [];
+  const boxSizeAmplifier = 10;
+  let lastBoxRef = boxesRef.lastElementChild;
+  let boxSize = lastBoxRef
+    ? Number(lastBoxRef.dataset.size) + boxSizeAmplifier
+    : 30;
 
-  //   }
-  document.querySelector(`#boxes`).append(createBox());
+  for (let a = 0; a < amount; a += 1) {
+    boxes.push(createBox(boxSize));
+    boxSize += boxSizeAmplifier;
+  }
+  return boxes;
 }
 
 function destroyBoxes() {
-  document.querySelector(`#boxes`).innerHTML = ``;
+  boxesRef.innerHTML = ``;
 }
