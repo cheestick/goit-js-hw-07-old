@@ -10,20 +10,18 @@ const boxQuantityInputRef = document.querySelector(
 );
 
 const boxesRef = document.querySelector(`div#boxes`);
-let quantity = null;
 
 boxQuantityInputRef.addEventListener(`blur`, quantityChangeHandler);
 
 function quantityChangeHandler({ target: { value } }) {
   if (!value) return;
-  quantity = value;
 
   createButtonRef.addEventListener('click', createButtonHandler);
   clearButtonRef.addEventListener('click', clearButtonHandler);
 }
 
 function createButtonHandler() {
-  boxesRef.append(...createBoxes(quantity));
+  boxesRef.append(...createBoxes(Number(boxQuantityInputRef.value)));
 }
 
 function clearButtonHandler() {
